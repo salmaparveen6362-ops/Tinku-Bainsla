@@ -129,21 +129,15 @@
         .stat-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);}
         .counter{font-size:2rem;font-weight:800;color:var(--primary);}
 
-        /* Feedback carousel */
+        /* ── HORIZONTAL SCROLLING MIXED TRACK (Images + Videos) ── */
         .feedback-viewport{overflow:hidden;margin:1.5rem 0;}
-        .feedback-track{display:flex;gap:15px;width:max-content;animation:scrollLeft 30s linear infinite;}
+        .feedback-track{display:flex;gap:15px;width:max-content;animation:scrollLeft 35s linear infinite;}
         .feedback-track:hover{animation-play-state:paused;}
         @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-        .feedback-item{flex-shrink:0;width:300px;height:auto;border-radius:15px;overflow:hidden;box-shadow:var(--shadow);background:#000;}
+        .feedback-item{flex-shrink:0;width:260px;height:auto;border-radius:15px;overflow:hidden;box-shadow:var(--shadow);background:#000;}
         .feedback-item img{width:100%;height:auto;display:block;}
-
-        /* Video embeds */
-        .video-card{
-            border-radius:15px;overflow:hidden;box-shadow:var(--shadow);
-            background:#000;border:3px solid var(--white);
-            aspect-ratio:9/16;max-height:520px;
-        }
-        .video-card iframe{width:100%;height:100%;border:0;}
+        .feedback-item.video-item{width:260px;aspect-ratio:9/16;background:#000;border-radius:15px;overflow:hidden;}
+        .feedback-item.video-item iframe{width:100%;height:100%;border:0;}
 
         .step-card{background: var(--white); border-radius:15px;padding:1.5rem;box-shadow:var(--shadow);transition:all .4s;height:100%;}
         .step-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);}
@@ -204,12 +198,12 @@
         @media(max-width:768px){
             section{padding:40px 0;}
             .hero-section{padding:50px 0 30px;}
-            .feedback-item{width:260px;}
+            .feedback-item{width:220px;}
+            .feedback-item.video-item{width:220px;}
             .counter{font-size:1.6rem;}
             .wa-btn{width:100%;justify-content:center;}
             h1.display-3{font-size:2rem;}
             h2.display-5{font-size:1.5rem;}
-            .video-card{max-height:420px;}
         }
         @media(prefers-reduced-motion:reduce){
             *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
@@ -245,15 +239,12 @@
 <!-- ===== HERO ===== -->
 <section class="hero-section text-center">
     <div class="container">
-        <div class="badge-custom glow-pulse">🚀 Digital Skills Mentorship Program</div>
+        <div class="badge-custom glow-pulse">🚀 Premium Digital Mentorship Program</div>
         <h1 class="display-3 fw-bold gradient-text mb-2">
-            Learn Skills.<br>Build Your Future.
+            Join <span class="counter" data-target="5000" data-suffix="+">0</span> Achievers
         </h1>
-        <p class="hero-text-compact">Master in-demand digital skills with step-by-step guidance • Work from your smartphone</p>
-        <div class="disclaimer-box mx-auto mb-3" style="max-width:600px;">
-            <strong>📢 Important:</strong> This is a skills training program. Your success depends on your effort and consistency. We do not promise guaranteed income.
-        </div>
-        <button class="wa-btn open-any glow-pulse" data-source="Hero">📲 Apply for Free Consultation</button>
+        <p class="hero-text-compact">Rising Together • From Zero to Digital Earner</p>
+        <button class="wa-btn open-any glow-pulse" data-source="Hero">📲 Start Your Journey Today</button>
     </div>
 </section>
 
@@ -306,17 +297,13 @@
     </div>
 </section>
 
-<!-- ===== FEEDBACK / SUCCESS STORIES ===== -->
+<!-- ===== FEEDBACK / SUCCESS STORIES (Images + Videos in ONE horizontal line) ===== -->
 <section class="py-5" style="background: var(--white);">
     <div class="container">
         <h2 class="text-center display-5 fw-bold mb-3" style="color:var(--primary);">✨ Real Success Stories</h2>
-        <p class="text-center text-muted mb-4">Watch how our community members are transforming their lives</p>
+        <p class="text-center text-muted mb-4">100% real results from individuals in our community</p>
 
-        <div class="disclaimer-box mx-auto mb-4" style="max-width:700px;">
-            <strong>⚠️ Disclaimer:</strong> These are real community members. Results shown are individual achievements and not typical or guaranteed. Your results will vary based on effort and dedication.
-        </div>
-
-        <!-- HORIZONTAL SCROLLING FEEDBACK IMAGES -->
+        <!-- SINGLE HORIZONTAL SCROLLING TRACK: Images + Videos together -->
         <div class="feedback-viewport">
             <div class="feedback-track">
                 <!-- Set 1 -->
@@ -326,6 +313,18 @@
                 <div class="feedback-item"><img src="https://i.ibb.co/27Wb0Qh1/IMG-20260803-162733-135-1.webp" alt="Success Story 4" loading="lazy"></div>
                 <div class="feedback-item"><img src="https://i.ibb.co/4nqN2hkw/IMG-20260803-162203-118.webp" alt="Success Story 5" loading="lazy"></div>
                 <div class="feedback-item"><img src="https://i.ibb.co/mrcQMxZb/Screenshot-20260803-163143.png" alt="Success Story 6" loading="lazy"></div>
+                <div class="feedback-item video-item">
+                    <iframe src="https://www.youtube.com/embed/PBVS3RSeGis?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="feedback-item video-item">
+                    <iframe src="https://www.youtube.com/embed/rA53-iHUJN8?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="feedback-item video-item">
+                    <iframe src="https://www.youtube.com/embed/-a-5EsXcXjE?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="feedback-item video-item">
+                    <iframe src="https://www.youtube.com/embed/RFrKfGrTmjM?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+                </div>
                 <!-- Set 2 duplicate for seamless loop -->
                 <div class="feedback-item"><img src="https://i.ibb.co/C54fd5Q4/IMG-20260803-162826-799.webp" alt="Success Story 1" loading="lazy"></div>
                 <div class="feedback-item"><img src="https://i.ibb.co/60srX573/IMG-20260803-162852-806.webp" alt="Success Story 2" loading="lazy"></div>
@@ -333,29 +332,16 @@
                 <div class="feedback-item"><img src="https://i.ibb.co/27Wb0Qh1/IMG-20260803-162733-135-1.webp" alt="Success Story 4" loading="lazy"></div>
                 <div class="feedback-item"><img src="https://i.ibb.co/4nqN2hkw/IMG-20260803-162203-118.webp" alt="Success Story 5" loading="lazy"></div>
                 <div class="feedback-item"><img src="https://i.ibb.co/mrcQMxZb/Screenshot-20260803-163143.png" alt="Success Story 6" loading="lazy"></div>
-            </div>
-        </div>
-
-        <!-- YouTube Shorts Grid -->
-        <h3 class="text-center h4 fw-bold mb-4 mt-5" style="color:var(--primary);">🎥 Video Testimonials</h3>
-        <div class="row g-4 mb-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="video-card">
+                <div class="feedback-item video-item">
                     <iframe src="https://www.youtube.com/embed/PBVS3RSeGis?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="video-card">
+                <div class="feedback-item video-item">
                     <iframe src="https://www.youtube.com/embed/rA53-iHUJN8?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="video-card">
+                <div class="feedback-item video-item">
                     <iframe src="https://www.youtube.com/embed/-a-5EsXcXjE?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="video-card">
+                <div class="feedback-item video-item">
                     <iframe src="https://www.youtube.com/embed/RFrKfGrTmjM?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
                 </div>
             </div>
