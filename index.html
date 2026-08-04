@@ -7,7 +7,7 @@
 
     <!-- SEO -->
     <meta name="description" content="Join Tinku Bainsla's digital mentorship program. Learn in-demand skills and start earning from your smartphone. Apply for free consultation today!">
-    <meta property="og:image" content="REPLACE_WITH_TINKU_PHOTO_URL">
+    <meta property="og:image" content="https://i.ibb.co/Fqq268gQ/1000048325-jpg.jpg">
     <meta name="theme-color" content="#2E5E99">
 
     <!-- Fonts -->
@@ -129,7 +129,7 @@
         .stat-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);}
         .counter{font-size:2rem;font-weight:800;color:var(--primary);}
 
-        /* ── HORIZONTAL FEEDBACK CAROUSEL ── */
+        /* Feedback carousel */
         .feedback-viewport{overflow:hidden;margin:1.5rem 0;}
         .feedback-track{display:flex;gap:15px;width:max-content;animation:scrollLeft 30s linear infinite;}
         .feedback-track:hover{animation-play-state:paused;}
@@ -263,9 +263,8 @@
         <div class="row g-4 align-items-center">
             <div class="col-lg-6">
                 <button class="wa-btn open-any glow-pulse mb-3 d-inline-block" data-source="About Image Button">👇 Meet Your Mentor 👇</button>
-                <!-- 👇👇👇 TINKU KI PHOTO YAHAN DAALEN (imgbb URL) 👇👇👇 -->
                 <div class="rounded-3 overflow-hidden shadow-lg" style="border:3px solid var(--primary);">
-                    <img src="REPLACE_WITH_TINKU_PHOTO_URL"
+                    <img src="https://i.ibb.co/Fqq268gQ/1000048325-jpg.jpg"
                          class="w-100" alt="Tinku Bainsla" loading="lazy">
                 </div>
             </div>
@@ -321,15 +320,19 @@
         <div class="feedback-viewport">
             <div class="feedback-track">
                 <!-- Set 1 -->
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="New member joining Team Tinku" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 2" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 3" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 4" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/C54fd5Q4/IMG-20260803-162826-799.webp" alt="Success Story 1" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/60srX573/IMG-20260803-162852-806.webp" alt="Success Story 2" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/xtrQfqPK/IMG-20260803-162341-193.webp" alt="Success Story 3" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/27Wb0Qh1/IMG-20260803-162733-135-1.webp" alt="Success Story 4" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/4nqN2hkw/IMG-20260803-162203-118.webp" alt="Success Story 5" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/mrcQMxZb/Screenshot-20260803-163143.png" alt="Success Story 6" loading="lazy"></div>
                 <!-- Set 2 duplicate for seamless loop -->
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="New member joining Team Tinku" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 2" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 3" loading="lazy"></div>
-                <div class="feedback-item"><img src="REPLACE_WITH_WHATSAPP_SCREENSHOT_URL" alt="Success Story 4" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/C54fd5Q4/IMG-20260803-162826-799.webp" alt="Success Story 1" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/60srX573/IMG-20260803-162852-806.webp" alt="Success Story 2" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/xtrQfqPK/IMG-20260803-162341-193.webp" alt="Success Story 3" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/27Wb0Qh1/IMG-20260803-162733-135-1.webp" alt="Success Story 4" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/4nqN2hkw/IMG-20260803-162203-118.webp" alt="Success Story 5" loading="lazy"></div>
+                <div class="feedback-item"><img src="https://i.ibb.co/mrcQMxZb/Screenshot-20260803-163143.png" alt="Success Story 6" loading="lazy"></div>
             </div>
         </div>
 
@@ -796,7 +799,7 @@
             fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(() => {});
         }
 
-        /* Meta Pixel - Sirf Lead event */
+        /* Meta Pixel - Lead event */
         if (typeof fbq !== 'undefined') {
             fbq('track', 'Lead');
         }
