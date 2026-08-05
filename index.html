@@ -195,6 +195,20 @@
             color: var(--darkest);
         }
 
+        .award-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--light);
+            transition: all .3s;
+        }
+        .award-img:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
         @media(max-width:768px){
             section{padding:40px 0;}
             .hero-section{padding:50px 0 30px;}
@@ -262,6 +276,7 @@
             <div class="col-lg-6">
                 <div class="badge-custom mb-2">💫 Your Mentor</div>
                 <h2 class="display-5 fw-bold mb-3">Hi, I'm Tinku Bainsla</h2>
+                <p class="fs-5 fw-semibold mb-3" style="color:var(--primary);">🏅 Honoured to receive the Excellence Award 2025. This recognition reflects years of hard work, passion, and perseverance.</p>
                 <div class="mb-3">
                     <p class="fs-5 d-flex align-items-center gap-2 mb-2">✅ Digital Entrepreneur</p>
                     <p class="fs-5 d-flex align-items-center gap-2 mb-2">💻 Phone-Based Skills Expert</p>
@@ -413,6 +428,9 @@
 <section class="py-5" style="background: linear-gradient(135deg,var(--lightest),var(--white));">
     <div class="container">
         <h2 class="text-center display-5 fw-bold mb-4" style="color:var(--primary);">Know Your Mentor</h2>
+        <div class="text-center mb-4">
+            <img src="https://i.ibb.co/KpXSxytP/Screenshot-20260805-105752-1.png" alt="Excellence Award 2025" class="award-img" loading="lazy" style="max-width:400px;">
+        </div>
         <div class="row g-3 align-items-center">
             <div class="col-md-6">
                 <div class="stats-white d-flex align-items-center gap-3 p-3 rounded-2 mb-3 shadow-sm">
@@ -655,15 +673,6 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="consentCheck" required style="border-color:var(--primary);">
-                            <label class="form-check-label" for="consentCheck" style="font-size:0.8rem;">
-                                I agree to the <a href="#" id="privacyLink" style="color:var(--primary);">Privacy Policy</a> and consent to being contacted about the program.
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
                         <button type="submit" class="wa-btn w-100">📲 Send & Connect on WhatsApp</button>
                     </div>
 
@@ -710,7 +719,6 @@
     const closeFormBtn  = document.getElementById('closeFormBtn');
     const privacyModal  = document.getElementById('privacyModal');
     const privacyBtn    = document.getElementById('privacyBtn');
-    const privacyLink   = document.getElementById('privacyLink');
     const closePrivBtn  = document.getElementById('closePrivacyBtn');
 
     function openForm(source) {
@@ -737,7 +745,6 @@
     formBackdrop.addEventListener('click', closeForm);
     closeFormBtn.addEventListener('click', closeForm);
     privacyBtn.addEventListener('click', openPrivacy);
-    privacyLink.addEventListener('click', (e) => { e.preventDefault(); openPrivacy(); });
     closePrivBtn.addEventListener('click', closePrivacy);
     privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
 
@@ -761,14 +768,9 @@
         const age        = document.getElementById('inp_age').value;
         const language   = document.getElementById('inp_language').value;
         const profession = document.getElementById('inp_profession').value;
-        const consent    = document.getElementById('consentCheck').checked;
 
         if (!name || phone.length < 10 || !age || !language || !profession) {
             alert('Please fill all fields correctly.');
-            return;
-        }
-        if (!consent) {
-            alert('Please agree to the Privacy Policy to continue.');
             return;
         }
 
@@ -792,10 +794,19 @@
 
         /* WhatsApp redirect */
         const msg = encodeURIComponent(
-            `Hello Tinku Bainsla! 👋\n\nI'm interested in your digital mentorship program. Here are my details:\n\nName: ${name}\nPhone: ${phone}\nAge: ${age}\nLanguage: ${language}\nStatus: ${profession}\n\nPlease share next steps. Thank you! ✨`
+            `Hello Tinku Bainsla! 👋
+
+I'm interested in your digital mentorship program. Here are my details:
+
+Name: ${name}
+Phone: ${phone}
+Age: ${age}
+Language: ${language}
+Status: ${profession}
+
+Please share next steps. Thank you! ✨`
         );
-        window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
-        closeForm();
+        window.location.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
     });
 </script>
 </body>
