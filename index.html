@@ -209,6 +209,31 @@
             border-color: var(--primary);
         }
 
+
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: pulseGlow 2s infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
         @media(max-width:768px){
             section{padding:40px 0;}
             .hero-section{padding:50px 0 30px;}
@@ -218,13 +243,19 @@
             .wa-btn{width:100%;justify-content:center;}
             h1.display-3{font-size:2rem;}
             h2.display-5{font-size:1.5rem;}
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+                bottom: 15px;
+                right: 15px;
+            }
         }
         @media(prefers-reduced-motion:reduce){
             *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
             .shine-effect::before,.feedback-track{animation:none !important;}
         }
     </style>
-<base target="_blank">
 <base target="_blank">
 <base target="_blank">
 </head>
@@ -683,6 +714,13 @@
     </div>
 </div>
 
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/918930492072" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+</a>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -690,6 +728,28 @@
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFNWtb_PPILyoG0dKhtuBzhfz_yW_JoU915jjsqnlKifyjX5gydz7LHjVWrwsFX40/exec";
     const WA_NUMBER  = "918930492072";
+
+    /* ============================================================
+       META PIXEL TRACKING - CONTACT EVENT
+
+       Rule: Contact event fires ONLY ONCE per session, and ONLY
+       when user completes the FULL funnel:
+       1. Clicks any CTA button (opens form popup) - NO tracking
+       2. Fills out the form with all details - NO tracking
+       3. Clicks "Send & Connect on WhatsApp" (form submit) - TRACK HERE
+       4. Gets redirected to WhatsApp with all details
+
+       The event does NOT fire on any other button clicks.
+       sessionStorage ensures it fires only once per browser tab.
+       ============================================================ */
+
+    function trackContactEvent() {
+      if (typeof fbq !== 'undefined' && !sessionStorage.getItem('tinku_contact_tracked')) {
+        fbq('track', 'Contact');
+        sessionStorage.setItem('tinku_contact_tracked', 'true');
+        console.log("[Meta Pixel] Contact event tracked successfully (once per session)");
+      }
+    }
 
     /* Counter animation */
     const counters = document.querySelectorAll('.counter');
@@ -722,6 +782,7 @@
     const privacyBtn    = document.getElementById('privacyBtn');
     const closePrivBtn  = document.getElementById('closePrivacyBtn');
 
+    // Open form popup (NO pixel tracking here - just opens the form)
     function openForm(source) {
         sourceInfo.value = source || 'Website';
         formBackdrop.classList.add('show');
@@ -749,6 +810,8 @@
     closePrivBtn.addEventListener('click', closePrivacy);
     privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
 
+    // Open form when ANY .open-any button is clicked
+    // NOTE: NO Meta Pixel event fires here. It only opens the form popup.
     document.addEventListener('click', (e) => {
         const trigger = e.target.closest('.open-any');
         if (trigger && !trigger.closest('#formContainer')) {
@@ -761,53 +824,110 @@
         if (e.key === 'Escape') { closeForm(); closePrivacy(); }
     });
 
-    /* Form submit */
+    /* ============================================================
+       FORM SUBMISSION HANDLER - FINAL ACTION
+
+       CRITICAL FIXES APPLIED:
+       1. WhatsApp redirect happens IMMEDIATELY (not after fetch)
+       2. Google Sheet data sent in background (no-cors mode)
+       3. Meta Pixel Contact event fires only on final submit
+       4. Fallback link created for popup blockers
+       5. Mobile-friendly WhatsApp URL format
+       ============================================================ */
     mainForm.addEventListener('submit', (e) => {
         e.preventDefault();
+
         const name       = document.getElementById('inp_name').value.trim();
         const phone      = document.getElementById('inp_phone').value.replace(/\D/g, '');
         const age        = document.getElementById('inp_age').value;
         const language   = document.getElementById('inp_language').value;
         const profession = document.getElementById('inp_profession').value;
+        const source     = sourceInfo.value || 'Website';
 
+        // Validation
         if (!name || phone.length < 10 || !age || !language || !profession) {
-            alert('Please fill all fields correctly.');
+            alert('Please fill all fields correctly with a valid 10-digit phone number.');
             return;
         }
 
-        /* Google Sheet */
-        if (!SCRIPT_URL.includes('YOUR_GOOGLE_SCRIPT_URL')) {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('phone', phone);
-            formData.append('age', age);
-            formData.append('language', language);
-            formData.append('profession', profession);
-            formData.append('source', sourceInfo.value);
-            formData.append('timestamp', new Date().toISOString());
-            fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(() => {});
+        // Build WhatsApp message
+        const msg = encodeURIComponent(
+            `Hello Tinku Bainsla! 👋\n\nI'm interested in your digital mentorship program. Here are my details:\n\nName: ${name}\nPhone: ${phone}\nAge: ${age}\nLanguage: ${language}\nStatus: ${profession}\n\nPlease share next steps. Thank you! ✨`
+        );
+
+        // Build WhatsApp URL (universal format works on all devices)
+        const waUrl = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+        // ============================================================
+        // FIX #1: Open WhatsApp IMMEDIATELY (before anything else)
+        // This ensures the redirect happens even if fetch fails or is slow
+        // ============================================================
+        const waWindow = window.open(waUrl, '_blank');
+
+        // If popup blocked, create a fallback clickable link
+        if (!waWindow || waWindow.closed || typeof waWindow.closed === 'undefined') {
+            // Create fallback button inside form
+            const fallbackDiv = document.createElement('div');
+            fallbackDiv.innerHTML = `
+                <div style="margin-top:15px;padding:15px;background:var(--lightest);border-radius:10px;text-align:center;">
+                    <p style="margin-bottom:10px;color:var(--darkest);font-weight:600;">📱 Tap below to open WhatsApp</p>
+                    <a href="${waUrl}" target="_blank" class="wa-btn" style="display:inline-flex;">Open WhatsApp</a>
+                </div>
+            `;
+            const submitBtn = mainForm.querySelector('button[type="submit"]');
+            submitBtn.parentNode.insertBefore(fallbackDiv, submitBtn.nextSibling);
+            submitBtn.style.display = 'none';
+            return; // Don't close form yet, let user click fallback
         }
 
-        /* Meta Pixel - Lead event */
+        // ============================================================
+        // FIX #2: Send data to Google Sheet in BACKGROUND
+        // Using no-cors mode so it doesn't block the WhatsApp redirect
+        // ============================================================
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('age', age);
+        formData.append('language', language);
+        formData.append('profession', profession);
+        formData.append('source', source);
+        formData.append('timestamp', new Date().toISOString());
+
+        // Use keepalive to ensure data sends even if page navigates away
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors',
+            keepalive: true
+        }).then(() => {
+            console.log('✅ Data saved to Google Sheet successfully');
+        }).catch((error) => {
+            console.error('❌ Sheet error:', error);
+            // Retry once after 2 seconds
+            setTimeout(() => {
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors',
+                    keepalive: true
+                }).catch(() => {});
+            }, 2000);
+        });
+
+        // ============================================================
+        // FIX #3: Meta Pixel Contact Event - FIRES ONLY HERE
+        // Only on successful form submit, only once per session
+        // Also keep existing Lead event
+        // ============================================================
+        trackContactEvent();
         if (typeof fbq !== 'undefined') {
             fbq('track', 'Lead');
         }
 
-        /* WhatsApp redirect */
-        const msg = encodeURIComponent(
-            `Hello Tinku Bainsla! 👋
-
-I'm interested in your digital mentorship program. Here are my details:
-
-Name: ${name}
-Phone: ${phone}
-Age: ${age}
-Language: ${language}
-Status: ${profession}
-
-Please share next steps. Thank you! ✨`
-        );
-        window.location.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+        // Close the form popup after a short delay
+        setTimeout(() => {
+            closeForm();
+        }, 500);
     });
 </script>
 </body>
