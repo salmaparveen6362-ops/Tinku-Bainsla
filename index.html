@@ -209,7 +209,6 @@
             border-color: var(--primary);
         }
 
-
         /* WhatsApp Float Button */
         .whatsapp-float {
             position: fixed;
@@ -256,7 +255,6 @@
             .shine-effect::before,.feedback-track{animation:none !important;}
         }
     </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body class="text-dark">
@@ -729,28 +727,6 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFNWtb_PPILyoG0dKhtuBzhfz_yW_JoU915jjsqnlKifyjX5gydz7LHjVWrwsFX40/exec";
     const WA_NUMBER  = "918930492072";
 
-    /* ============================================================
-       META PIXEL TRACKING - CONTACT EVENT
-
-       Rule: Contact event fires ONLY ONCE per session, and ONLY
-       when user completes the FULL funnel:
-       1. Clicks any CTA button (opens form popup) - NO tracking
-       2. Fills out the form with all details - NO tracking
-       3. Clicks "Send & Connect on WhatsApp" (form submit) - TRACK HERE
-       4. Gets redirected to WhatsApp with all details
-
-       The event does NOT fire on any other button clicks.
-       sessionStorage ensures it fires only once per browser tab.
-       ============================================================ */
-
-    function trackContactEvent() {
-      if (typeof fbq !== 'undefined' && !sessionStorage.getItem('tinku_contact_tracked')) {
-        fbq('track', 'Contact');
-        sessionStorage.setItem('tinku_contact_tracked', 'true');
-        console.log("[Meta Pixel] Contact event tracked successfully (once per session)");
-      }
-    }
-
     /* Counter animation */
     const counters = document.querySelectorAll('.counter');
     const counterObserver = new IntersectionObserver((entries) => {
@@ -782,7 +758,6 @@
     const privacyBtn    = document.getElementById('privacyBtn');
     const closePrivBtn  = document.getElementById('closePrivacyBtn');
 
-    // Open form popup (NO pixel tracking here - just opens the form)
     function openForm(source) {
         sourceInfo.value = source || 'Website';
         formBackdrop.classList.add('show');
@@ -810,8 +785,6 @@
     closePrivBtn.addEventListener('click', closePrivacy);
     privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
 
-    // Open form when ANY .open-any button is clicked
-    // NOTE: NO Meta Pixel event fires here. It only opens the form popup.
     document.addEventListener('click', (e) => {
         const trigger = e.target.closest('.open-any');
         if (trigger && !trigger.closest('#formContainer')) {
@@ -824,16 +797,7 @@
         if (e.key === 'Escape') { closeForm(); closePrivacy(); }
     });
 
-    /* ============================================================
-       FORM SUBMISSION HANDLER - FINAL ACTION
-
-       CRITICAL FIXES APPLIED:
-       1. WhatsApp redirect happens IMMEDIATELY (not after fetch)
-       2. Google Sheet data sent in background (no-cors mode)
-       3. Meta Pixel Contact event fires only on final submit
-       4. Fallback link created for popup blockers
-       5. Mobile-friendly WhatsApp URL format
-       ============================================================ */
+    /* ===== FORM SUBMIT: Faizeen-style tracking + Full Details to WhatsApp ===== */
     mainForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -844,46 +808,13 @@
         const profession = document.getElementById('inp_profession').value;
         const source     = sourceInfo.value || 'Website';
 
-        // Validation
-        if (!name || phone.length < 10 || !age || !language || !profession) {
-            alert('Please fill all fields correctly with a valid 10-digit phone number.');
+        /* Validation */
+        if (!name || phone.length < 6 || !age || !language || !profession) {
+            alert('Please fill all fields correctly.');
             return;
         }
 
-        // Build WhatsApp message
-        const msg = encodeURIComponent(
-            `Hello Tinku Bainsla! 👋\n\nI'm interested in your digital mentorship program. Here are my details:\n\nName: ${name}\nPhone: ${phone}\nAge: ${age}\nLanguage: ${language}\nStatus: ${profession}\n\nPlease share next steps. Thank you! ✨`
-        );
-
-        // Build WhatsApp URL (universal format works on all devices)
-        const waUrl = `https://wa.me/${WA_NUMBER}?text=${msg}`;
-
-        // ============================================================
-        // FIX #1: Open WhatsApp IMMEDIATELY (before anything else)
-        // This ensures the redirect happens even if fetch fails or is slow
-        // ============================================================
-        const waWindow = window.open(waUrl, '_blank');
-
-        // If popup blocked, create a fallback clickable link
-        if (!waWindow || waWindow.closed || typeof waWindow.closed === 'undefined') {
-            // Create fallback button inside form
-            const fallbackDiv = document.createElement('div');
-            fallbackDiv.innerHTML = `
-                <div style="margin-top:15px;padding:15px;background:var(--lightest);border-radius:10px;text-align:center;">
-                    <p style="margin-bottom:10px;color:var(--darkest);font-weight:600;">📱 Tap below to open WhatsApp</p>
-                    <a href="${waUrl}" target="_blank" class="wa-btn" style="display:inline-flex;">Open WhatsApp</a>
-                </div>
-            `;
-            const submitBtn = mainForm.querySelector('button[type="submit"]');
-            submitBtn.parentNode.insertBefore(fallbackDiv, submitBtn.nextSibling);
-            submitBtn.style.display = 'none';
-            return; // Don't close form yet, let user click fallback
-        }
-
-        // ============================================================
-        // FIX #2: Send data to Google Sheet in BACKGROUND
-        // Using no-cors mode so it doesn't block the WhatsApp redirect
-        // ============================================================
+        /* 1. Google Sheets - all lead details saved (Faizeen style) */
         const formData = new FormData();
         formData.append('name', name);
         formData.append('phone', phone);
@@ -892,42 +823,17 @@
         formData.append('profession', profession);
         formData.append('source', source);
         formData.append('timestamp', new Date().toISOString());
+        fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(() => {});
 
-        // Use keepalive to ensure data sends even if page navigates away
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors',
-            keepalive: true
-        }).then(() => {
-            console.log('✅ Data saved to Google Sheet successfully');
-        }).catch((error) => {
-            console.error('❌ Sheet error:', error);
-            // Retry once after 2 seconds
-            setTimeout(() => {
-                fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'no-cors',
-                    keepalive: true
-                }).catch(() => {});
-            }, 2000);
-        });
+        /* 2. Meta Pixel - Faizeen style: only Contact */
+        if (typeof fbq !== 'undefined') { fbq('track', 'Contact'); }
 
-        // ============================================================
-        // FIX #3: Meta Pixel Contact Event - FIRES ONLY HERE
-        // Only on successful form submit, only once per session
-        // Also keep existing Lead event
-        // ============================================================
-        trackContactEvent();
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'Lead');
-        }
-
-        // Close the form popup after a short delay
-        setTimeout(() => {
-            closeForm();
-        }, 500);
+        /* 3. WhatsApp - FULL lead details bhejo */
+        const msg = encodeURIComponent(
+            `Hello Tinku Bainsla! 👋\n\nI'm interested in your digital mentorship program. Here are my details:\n\nName: ${name}\nPhone: ${phone}\nAge: ${age}\nLanguage: ${language}\nStatus: ${profession}\n\nPlease share next steps. Thank you! ✨`
+        );
+        window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+        closeForm();
     });
 </script>
 </body>
